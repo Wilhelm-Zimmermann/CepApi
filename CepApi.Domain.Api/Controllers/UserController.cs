@@ -1,4 +1,6 @@
+using CepApi.Domain.Api.Utils;
 using CepApi.Domain.Commands;
+using CepApi.Domain.Entities;
 using CepApi.Domain.Handlers;
 using CepApi.Domain.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +32,26 @@ public class UserController : ControllerBase
         if (result.Success)
         {
             return CreatedAtAction(nameof(CreateUser), result);
+        }
+
+        return BadRequest(result);
+    }
+
+    [HttpPost]
+    [Route("login")]
+    public async Task<ActionResult<GenericCommandResult>> LoginUser([FromBody] LoginUserCommand command, [FromServices] UserHandler handler)
+    {
+        var result = await handler.HandleAsync(command);
+
+        if (result.Success)
+        {
+            var token = JwtTokenServices.GenerateToken((User)result.Data);
+            var userRole = JwtTokenServices.GetUserRole(token);
+
+            return Ok(new GenericCommandResult("User logged successfully", new
+            {
+                Token = token
+            }, true));
         }
 
         return BadRequest(result);

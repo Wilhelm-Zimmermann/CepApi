@@ -54,9 +54,21 @@ namespace CepApi.Domain.Handlers
             return new GenericCommandResult("User not found", null, false);
         }
 
-        public Task<ICommandResult> HandleAsync(LoginUserCommand command)
+        public async Task<ICommandResult> HandleAsync(LoginUserCommand command)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetUserByEmail(command.Email);
+
+            if(user != null)
+            {
+                var passwordMatch = PasswordHash.PasswordMatch(command.Password, user.Password);
+
+                if(passwordMatch)
+                {
+                    return new GenericCommandResult("User found", user, true);
+                }
+            }
+
+            return new GenericCommandResult("Email/Password might be wrong", null, false);
         }
     }
 }
