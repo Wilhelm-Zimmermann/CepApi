@@ -1,4 +1,7 @@
+using CepApi.Domain.Handlers;
 using CepApi.Domain.Infra.Context;
+using CepApi.Domain.Infra.Repositories;
+using CepApi.Domain.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace CepApi.Domain.Api.Extensions;
@@ -21,5 +24,11 @@ public static class DependencyResolver
                     );
                 });
         });
+
+        // Repositories
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+        // Handlers
+        builder.Services.AddScoped<UserHandler, UserHandler>();
     }
 }
