@@ -14,5 +14,25 @@
             Password = password;
             Role = role;
         }
+
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
+
+        public void UpdateEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void UpdatePassword(string password) 
+        {
+            Password = password;    
+        }
+
+        public void UpdateRole(string role)
+        {
+            Role = role;
+        }
     }
 }

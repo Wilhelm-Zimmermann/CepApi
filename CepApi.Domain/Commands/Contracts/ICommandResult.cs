@@ -3,7 +3,7 @@
     public interface ICommandResult
     {
         string Message { get; }
-        string Data { get; }
+        object Data { get; }
         bool Success { get; }
     }
 }
