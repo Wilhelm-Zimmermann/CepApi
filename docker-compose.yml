@@ -21,7 +21,7 @@ services:
   dotnet-app:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./DockerFile
     ports:
       - "80:80"
     depends_on:
