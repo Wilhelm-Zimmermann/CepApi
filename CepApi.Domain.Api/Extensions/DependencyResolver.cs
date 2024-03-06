@@ -4,6 +4,7 @@ using CepApi.Domain.Infra.Context;
 using CepApi.Domain.Infra.Repositories;
 using CepApi.Domain.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CepApi.Domain.Api.Extensions;
 
@@ -34,6 +35,11 @@ public static class DependencyResolver
         {
             options.Configuration = redisConnectionString;
         });
+
+        //builder.Services.Configure<MemoryCacheEntryOptions>(options =>
+        //{
+        //    options.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+        //});
 
         // Repositories
         builder.Services.AddScoped<IUserRepository, UserRepository>();

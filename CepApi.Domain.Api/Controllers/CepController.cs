@@ -23,7 +23,8 @@ namespace CepApi.Domain.Api.Controllers
         //[Authorize(Roles = "Administrator")]
         public async Task<ActionResult<GenericCommandResult>> GetCep([FromBody] CepSearchCommand command)
         {
-            var cachedCep = await _distributedCache.GetStringAsync("cep");
+            var cacheKey = $"cep_${command.Cep}";
+            var cachedCep = await _distributedCache.GetStringAsync(cacheKey);
             if (!string.IsNullOrEmpty(cachedCep))
             {
                 return Ok(new GenericCommandResult("Returned from cache", cachedCep, true));
@@ -31,7 +32,10 @@ namespace CepApi.Domain.Api.Controllers
 
             var cep = await _connection.GetAsync($"/ws/{command.Cep}/json");
 
-            await _distributedCache.SetStringAsync("cep", cep);
+            await _distributedCache.SetStringAsync(cacheKey, cep, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(new GenericCommandResult("Returned from api", cep, true));
         }
