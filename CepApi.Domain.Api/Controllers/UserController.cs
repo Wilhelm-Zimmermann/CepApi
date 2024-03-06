@@ -3,6 +3,7 @@ using CepApi.Domain.Commands;
 using CepApi.Domain.Entities;
 using CepApi.Domain.Handlers;
 using CepApi.Domain.Repositories.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CepApi.Domain.Api.Controllers;
@@ -25,6 +26,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<GenericCommandResult>> CreateUser([FromBody] CreateUserCommand command, [FromServices] UserHandler handler)
     {
         var result = await handler.HandleAsync(command);
