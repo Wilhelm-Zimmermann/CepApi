@@ -1,4 +1,6 @@
-﻿namespace CepApi.Domain.Api.Utils
+﻿using System.Text.Json;
+
+namespace CepApi.Domain.Api.Utils
 {
     public class HttpConnection
     {
@@ -15,9 +17,24 @@
             var response = await _httpClient.GetAsync(endpoint);
             response.EnsureSuccessStatusCode();
 
-            var responseBody = await response.Content.ReadAsStringAsync();
+            if(response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var jsonDoc = JsonDocument.Parse(responseBody);
 
-            return responseBody;
+                if(jsonDoc.RootElement.TryGetProperty("erro", out var errorElement))
+                {
+                    string erroValue = errorElement.GetString();
+                    if (string.Equals(erroValue, "true", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "";
+                    }
+                }
+
+               return responseBody;
+            }
+
+            return "";
         }
     }
 }
