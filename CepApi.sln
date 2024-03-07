@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CepApi.Domain.Infra", "CepA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CepApi.Domain.Api", "CepApi.Domain.Api\CepApi.Domain.Api.csproj", "{600EC4AC-990D-43C8-8557-22E228753C22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CepApi.Domain.Test", "CepApi.Domain.Test\CepApi.Domain.Test.csproj", "{37573DE7-9E8E-465A-BD2A-738BF4EFA129}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CepApi.Domain.Shared", "CepApi.Domain.Shared\CepApi.Domain.Shared.csproj", "{7123174A-3769-436B-877B-A6E987003C01}"
 EndProject
 Global

@@ -1,5 +1,6 @@
 ﻿using CepApi.Domain.Api.Utils;
 using CepApi.Domain.Commands;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
@@ -20,9 +21,14 @@ namespace CepApi.Domain.Api.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<GenericCommandResult>> GetCep([FromBody] CepSearchCommand command)
         {
+            if(!CepValidator.IsValidCep(command.Cep))
+            {
+                return BadRequest(new GenericCommandResult("You typed an invalid cep, it must be on this format, 00000000 or 00000-000", null, false));
+            }
+
             var cacheKey = $"cep_${command.Cep}";
             var cachedCep = await _distributedCache.GetStringAsync(cacheKey);
 
