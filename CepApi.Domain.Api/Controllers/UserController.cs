@@ -14,6 +14,7 @@ public class UserController : ControllerBase
 {
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<GenericCommandResult>> GetUserById(Guid id, [FromServices] IUserRepository userRepository)
     {
         var user = await userRepository.GetUserById(id);
@@ -60,6 +61,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<GenericCommandResult>> UpdateUser(Guid id, [FromBody] UpdateUserCommand command, [FromServices] UserHandler handler)
     {
         command.Id = id;
@@ -74,6 +76,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<GenericCommandResult>> DeleteUser(Guid id, [FromServices] IUserRepository userRepository)
     {
         await userRepository.DeleteUser(id);
